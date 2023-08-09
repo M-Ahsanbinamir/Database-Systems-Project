@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+
+		<!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <title>Dashboard - Fusion Travels</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500&display=swap">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <link rel="stylesheet" href="../static/css/jquery.mCustomScrollbar.min.css">
+        <link rel="stylesheet" href="../static/css/animate.css">
+		<link rel="stylesheet" href="../static/vendor/boxicons/css/boxicons.min.css">
+        <link rel="stylesheet" href="../static/css/style-dashboard.css">
+        <link rel="stylesheet" href="../static/css/media-queries.css">
+		
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="../static/img/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../static/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../static/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../static/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon-precomposed" href="../static/img/apple-touch-icon.png">
+
+		<script>
+			function logout(){
+				alert('Are you sure you want to logout?');
+
+				window.location.href='/logout';
+			}
+		</script>
+
+		<style>
+			@font-face {
+				font-family: Lobster; 
+				src: url(../static/vendor/Lobster-Regular.ttf);
+			}
+			@font-face {
+				font-family: Courgette;
+				src: url(../static/vendor/Courgette-Regular.ttf);
+			}
+		</style>
+    </head>
+	
+    <body>
+		<!-- Modal Body -->
+		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered">
+				<div class="modal-content">
+					<div class="container-fluid">
+						<h1>Checkout</h1>
+						<form action="/checkout" method="post">
+							<input type="text" name="fullname" id="fullnameInput" placeholder="Fullname" readonly>
+							<input type="text" name="destination" id="destinationInput" placeholder="Destination" readonly>
+							<input type="text" name="price" id="priceInput" placeholder="Price" readonly>
+							<input type="text" name="contactnumber" placeholder="Contact Number" required>
+							<input type="text" name="address" placeholder="Address" required><br>
+							<button type="submit"><i class="fa fa-receipt"></i> Checkout</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			function populateModal(button) {
+				// Get the data from the button
+				var destination = button.getAttribute("data-destination");
+				var price = button.getAttribute("data-price");
+			
+				// Set the values in the input fields
+				document.getElementById("destinationInput").value = destination;
+				document.getElementById("priceInput").value = price;
+			
+				// Get the fullname from the login session
+				var fullname = "{{ session.get('fullname') }}";
+			
+				// Set the value in the fullname input field
+				document.getElementById("fullnameInput").value = fullname;
+			}
+		</script>
+  
+
+		<!-- Wrapper -->
+    	<div class="wrapper">
+
+			<!-- Sidebar -->
+			<nav class="sidebar">
+				
+				<!-- close sidebar menu -->
+				<div class="dismiss">
+					<i class="fas fa-arrow-left"></i>
+				</div>
+				
+				<div class="logo">
+					<span>Welcome, </span>
+					<h3>{{ session.get('fullname') }}</h3>
+			    </div>
+				  
+				
+				<ul class="list-unstyled menu-elements">
+					<li>
+						<a class="scrollto" href="#top-content"><i class="fas fa-home"></i> Home</a>
+					</li>
+					<li>
+						<a class="scrollto" href="#Local"><i class="fas fa-location-arrow" aria-hidden="true"></i> Local Travel Plans</a>
+					</li>
+					<li>
+						<a class="scrollto" href="#International"><i class="fas fa-globe" aria-hidden="true"></i> International Travel Plans</a>
+					</li>
+					<li>
+						<a class="nav-link" href="/er"><i class="fas fa-book-open"></i></i> Expense Recorder</a>
+					</li>
+					<li>
+						<a class="scrollto" href="#contactus"><i class="fas fa-envelope"></i> Contact Us</a>
+					</li>
+					
+				</ul>
+				
+				<div class="to-top">
+					<a class="btn btn-primary btn-customized" href="#" role="button">
+	                    <i class="fas fa-arrow-up"></i> Top
+	                </a>
+				</div>
+				<hr>
+				<ul class="list-unstyled menu-elements">
+					<li>
+						<a class="nav-link" onclick="logout()" style="cursor: pointer;"><i class="fas fa-envelope"></i> Log out</a>
+					</li>
+				</ul>
+			</nav>
+			<!-- End sidebar -->
+			
+			<!-- Dark overlay -->
+    		<div class="overlay"></div>
+
+			<!-- Content -->
+			<div class="content">
+				<!-- open sidebar menu -->
+				<a class="btn btn-primary btn-customized open-menu" href="#" role="button">
+                    <i class="fas fa-align-left"></i> <span>Menu</span>
+                </a>
+			
+		        <!-- Top content -->
+		        <div class="top-content section-container" id="top-content">
+			        <div class="container">
+			            <div class="row">
+			                <div class="col col-lg-20">
+			                	<h1 class="wow fadeIn"><strong>Personal Dashboard</strong></h1>
+			                	<div class="description wow fadeInLeft">
+			                		<p>
+			                			<b>Unleash Your Inner Explorer: Embark on Unforgettable Journeys and Let Your Wanderlust Take Flight!
+			                		</p>
+			                	</div>
+			                	<div class="buttons wow fadeInUp">							
+									<a class="btn btn-primary btn-customized scrollto" href="#Local" role="button">
+										<i class="fa fa-location-arrow" aria-hidden="true"></i> Local Plans
+									</a>
+									<a class="btn btn-primary btn-customized scrollto" href="#International" role="button">
+										<i class="fa fa-globe"></i> International Plans
+									</a>
+								</div>
+			                </div>
+			            </div>
+			        </div>
+		        </div>	        
+	        </div>
+	        <!-- End content -->
+        </div>
+        <!-- End wrapper -->
+
+		
+		<h2 class="divider donotcross" contenteditable="false"><strong>Local Travel Plans</strong></h2>
+		<div class="section-2" id="Local">
+			<div class="row">
+				<div class="col-lg-4 col-md-6 destination-item">
+					<div class="box">
+						<center>
+							<div class="plan-info">
+								<h2><strong>Khyber Pakhtunkhwa</strong></h2>
+								
+							</div>
+							<div id="kpklocal" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner" style="padding: 10px;">
+									<div class="carousel-item active">
+										<img class="d-block w-100" src="../static/img/Destinations/KPK/KPK.png" alt="Slide 1">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/KPK/KPK2.png" alt="Slide 2">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/KPK/KPK3.png" alt="Slide 3">
+									</div>
+								</div>
+								<a class="carousel-control-prev" href="#kpklocal" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#kpklocal" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
+							</div>
+							<div class="destination-description">
+								<h3>9 Days and 10 Nights</h3>
+								<p>
+									Captivating mountains, valleys, landscapes. Tourists adore culture, hospitality, adventure. Ideal for nature lovers, enthusiasts.
+								</p>
+							</div>
+							<div class="note">
+								<p>
+									*Charges for each person mentioned below<br>
+									*Flight & Food (except Refreshments) charges to be charged seperately 
+								</p>
+							</div>
+							<div class="cash">
+								<h3>Rs. 40,000</h3>
+							</div>
+							<a class="btn btn-primary btn-customized" role="button" onclick="populateModal(this)" data-destination="Khyber Pakhtunkhwa" data-price="40000" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-cart-plus"></i> Book Now</a>
+						</center>
+					</div>
+				</div>
+				
+				<div class="col-lg-4 col-md-6 destination-item">
+					<div class="box">
+						<center>
+							<div class="plan-info">
+								<h2><strong>Sindh</strong></h2>
+								
+							</div>
+							<div id="sindhlocal" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner" style="padding: 10px;">
+									<div class="carousel-item active">
+										<img class="d-block w-100" src="../static/img/Destinations/Sindh/Sindh.png" alt="Slide 1">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Sindh/Sindh2.png" alt="Slide 2">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Sindh/Sindh3.png" alt="Slide 3">
+									</div>
+								</div>
+								<a class="carousel-control-prev" href="#sindhlocal" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#sindhlocal" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
+							</div>
+							<div class="destination-description">
+								<h3>9 Days and 10 Nights</h3>
+								<p>
+									Sindh has historical and cultural wonders. Karachi's streets and Mohenjo-Daro's ruins invite exploration. Sindh offers heritage, cuisine, and Sindhi hospitality.
+								</p>
+							</div>
+							<div class="note">
+								<p>
+									*Charges for each persons only<br>
+									*Flight & Food (except Refreshments) charges to be charged seperately 
+								</p>
+							</div>
+							<div class="cash">
+								<h3>Rs. 25,000</h3>
+							</div>
+							<a class="btn btn-primary btn-customized" role="button" onclick="populateModal(this)" data-destination="Sindh" data-price="25000" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-cart-plus"></i> Book Now</a>
+						</center>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 destination-item">
+					<div class="box">
+						<center>
+							<div class="plan-info">
+								<h2><strong>Balochistan</strong></h2>
+								
+							</div>
+							<div id="blocal" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner" style="padding: 10px;">
+									<div class="carousel-item active">
+										<img class="d-block w-100" src="../static/img/Destinations/Balochistan/Balochistan.png" alt="Slide 1">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Balochistan/Balochistan2.png" alt="Slide 2">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Balochistan/Balochistan3.png" alt="Slide 3">
+									</div>
+								</div>
+								<a class="carousel-control-prev" href="#blocal" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#blocal" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
+							</div>
+							<div class="destination-description">
+								<h3>9 Days and 10 Nights</h3>
+								<p>
+									A province in Pakistan, rugged beauty, cultural richness. Deserts, mountains, coastline, diverse landscapes. Explore archaeology, hospitality, traditions, cuisine.
+								</p>
+							</div>
+							<div class="note">
+								<p>
+									*Charges for each persons mentioned below<br>
+									*Flight & Food (except Refreshments) charges to be charged seperately 
+								</p>
+							</div>
+							<div class="cash">
+								<h3>Rs. 30,000</h3>
+							</div>
+							<a class="btn btn-primary btn-customized" role="button" onclick="populateModal(this)" data-destination="Balochistan" data-price="30000" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-cart-plus"></i> Book Now</a>
+						</center>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 destination-item">
+					<div class="box">
+						<center>
+							<div class="plan-info">
+								<h2><strong>Punjab</strong></h2>
+								
+							</div>
+							<div id="punjablocal" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner" style="padding: 10px;">
+									<div class="carousel-item active">
+										<img class="d-block w-100" src="../static/img/Destinations/Punjab/Punjab.png" alt="Slide 1">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Punjab/Punjab2.png" alt="Slide 2">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Punjab/Punjab3.png" alt="Slide 3">
+									</div>
+								</div>
+								<a class="carousel-control-prev" href="#punjablocal" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#punjablocal" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
+							</div>
+							<div class="destination-description">
+								<h3>9 Days and 10 Nights</h3>
+								<p>
+									Punjab, Pakistan, rich history, vibrant culture, fertile landscapes. Badshahi Mosque, Lahore. Serene fields, rural countryside. Captivating tourists: landmarks, cuisine, people.
+								</p>
+							</div>
+							<div class="note">
+								<p>
+									*Charges for each person mentioned below<br>
+									*Flight & Food (except Refreshments) charges to be charged seperately 
+								</p>
+							</div>
+							<div class="cash">
+								<h3>Rs. 35,000</h3>
+							</div>
+							<a class="btn btn-primary btn-customized" role="button" onclick="populateModal(this)" data-destination="Punjab" data-price="35000" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-cart-plus"></i> Book Now</a>
+						</center>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 destination-item">
+					<div class="box">
+						<center>
+							<div class="plan-info">
+								<h2><strong>Northern Areas</strong></h2>
+								
+							</div>
+							<div id="nalocal" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner" style="padding: 10px;">
+									<div class="carousel-item active">
+										<img class="d-block w-100" src="../static/img/Destinations/Northern_Pakistan/NA1.png" alt="Slide 1">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Northern_Pakistan/NA2.png" alt="Slide 2">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Northern_Pakistan/NA3.png" alt="Slide 3">
+									</div>
+								</div>
+								<a class="carousel-control-prev" href="#nalocal" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#nalocal" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
+							</div>
+							<div class="destination-description">
+								<h3>9 Days and 10 Nights</h3>
+								<p>
+									The Northern Areas of Pakistan feature stunning mountains, lakes, and cultures, attracting adventurers and nature lovers.
+								</p>
+							</div>
+							<div class="note">
+								<p>
+									*Charges for each person mentioned below<br>
+									*Flight & Food (except Refreshments) charges to be charged seperately 
+								</p>
+							</div>
+							<div class="cash">
+								<h3>Rs. 70,000</h3>
+							</div>
+							<a class="btn btn-primary btn-customized" role="button" onclick="populateModal(this)" data-destination="Northern Areas" data-price="70000" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-cart-plus"></i> Book Now</a>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- International Travel Plans -->
+		<h2 class="divider donotcross" contenteditable="false"><strong>International Travel Plans</strong></h2>
+		<div class="section-2" style="display: block;" id="International">
+			<div class="row">
+				<div class="col-lg-4 col-md-6 destination-item">
+					<div class="box">
+						<center>
+							<div class="plan-info">
+								<h2><strong>Singapore</strong></h2>
+								
+							</div>
+							<div id="singi" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner" style="padding: 10px;">
+									<div class="carousel-item active">
+										<img class="d-block w-100" src="../static/img/Destinations/Singapore/Singapore1.png" alt="Slide 1">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Singapore/Singapore2.png" alt="Slide 2">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Singapore/Singapore3.png" alt="Slide 3">
+									</div>
+								</div>
+								<a class="carousel-control-prev" href="#singi" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#singi" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
+							</div>
+							<div class="destination-description">
+								<h3>5 Days and 5 Nights</h3>
+								<p>
+									Captivating city-state in Southeast Asia. Delights visitors with charm. Modern skyscrapers, green spaces, cultural diversity.
+								</p>
+							</div>
+							<div class="note">
+								<p>
+									*Available for upto 2 persons only<br>
+									*Flight & Food charges to be charged seperately 
+								</p>
+							</div>
+							<div class="cash">
+								<h3>Rs. 10,00,000</h3>
+							</div>
+							<a class="btn btn-primary btn-customized" role="button" onclick="populateModal(this)" data-destination="Singapore" data-price="1000000" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-cart-plus"></i> Book Now</a>
+						</center>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 destination-item">
+					<div class="box">
+						<center>
+							<div class="plan-info">
+								<h2><strong>Malaysia</strong></h2>
+								
+							</div>
+							<div id="malayi" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner" style="padding: 10px;">
+									<div class="carousel-item active">
+										<img class="d-block w-100" src="../static/img/Destinations/Malaysia/Malaysia1.png" alt="Slide 1">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Malaysia/Malaysia2.png" alt="Slide 2">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Malaysia/Malaysia3.png" alt="Slide 3">
+									</div>
+								</div>
+								<a class="carousel-control-prev" href="#malayi" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#malayi" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
+							</div>
+							<div class="destination-description">
+								<h3>5 Days and 5 Nights</h3>
+								<p>
+									Vibrant capital Malaysia. Bustling metropolis. Skyscrapers, markets, culture, food. Modernity, tradition, wonders, experiences.
+								</p>
+							</div>
+							<div class="note">
+								<p>
+									*Available for upto 2 persons only<br>
+									*Flight & Food charges to be charged seperately 
+								</p>
+							</div>
+							<div class="cash">
+								<h3>Rs. 700,000</h3>
+							</div>
+							<a class="btn btn-primary btn-customized" role="button" onclick="populateModal(this)" data-destination="Malaysia" data-price="700000" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-cart-plus"></i> Book Now</a>
+						</center>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 destination-item">
+					<div class="box">
+						<center>
+							<div class="plan-info">
+								<h2><strong>Thailand</strong></h2>
+								
+							</div>
+							<div id="ithai" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner" style="padding: 10px;">
+									<div class="carousel-item active">
+										<img class="d-block w-100" src="../static/img/Destinations/Thailand/thailand1.png" alt="Slide 1">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Thailand/thailand2.png" alt="Slide 2">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Thailand/thailand3.png" alt="Slide 3">
+									</div>
+								</div>
+								<a class="carousel-control-prev" href="#ithai" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#ithai" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
+							</div>
+							<div class="destination-description">
+								<h3>5 Days and 5 Nights</h3>
+								<p>
+									Thailand, "Land of Smiles." Southeast Asian country. Cultural heritage, stunning landscapes, delicious cuisine. Popular destination worldwide.
+								</p>
+							</div>
+							<div class="note">
+								<p>
+									*Available for upto 2 persons only<br>
+									*Flight & Food charges to be charged seperately 
+								</p>
+							</div>
+							<div class="cash">
+								<h3>Rs. 200,000</h3>
+							</div>
+							<a class="btn btn-primary btn-customized" role="button" onclick="populateModal(this)" data-destination="Thailand" data-price="200000" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-cart-plus"></i> Book Now</a>
+						</center>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 destination-item">
+					<div class="box">
+						<center>
+							<div class="plan-info">
+								<h2><strong>United Arab Emirates</strong></h2>
+								
+							</div>
+							<div id="uaei" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner" style="padding: 10px;">
+									<div class="carousel-item active">
+										<img class="d-block w-100" src="../static/img/Destinations/UAE/UAE.png" alt="Slide 1">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/UAE/uae1.png" alt="Slide 2">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/UAE/uae2.png" alt="Slide 3">
+									</div>
+								</div>
+								<a class="carousel-control-prev" href="#uaei" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#uaei" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
+							</div>
+							<div class="destination-description">
+								<h3>5 Days and 5, Nights</h3>
+								<p>
+									Captivating mountains, valleys, landscapes. Tourists adore culture, hospitality, adventure. Ideal for nature lovers, enthusiasts.
+								</p>
+							</div>
+							<div class="note">
+								<p>
+									*Available for upto 2 persons only<br>
+									*Flight & Food charges to be charged seperately 
+								</p>
+							</div>
+							<div class="cash">
+								<h3>Rs. 500,000</h3>
+							</div>
+							<a class="btn btn-primary btn-customized" role="button" onclick="populateModal(this)" data-destination="UAE" data-price="500000" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-cart-plus"></i> Book Now</a>
+						</center>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 destination-item">
+					<div class="box">
+						<center>
+							<div class="plan-info">
+								<h2><strong>Turkey</strong></h2>
+								
+							</div>
+							<div id="turkeyi" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner" style="padding: 10px;">
+									<div class="carousel-item active">
+										<img class="d-block w-100" src="../static/img/Destinations/Turkey/Turkey1.png" alt="Slide 1">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Turkey/Turkey2.png" alt="Slide 2">
+									</div>
+									<div class="carousel-item">
+										<img class="d-block w-100" src="../static/img/Destinations/Turkey/Turkey3.png" alt="Slide 3">
+									</div>
+								</div>
+								<a class="carousel-control-prev" href="#eturkeyi" role="button" data-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#turkeyi" role="button" data-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
+							</div>
+							<div class="destination-description">
+								<h3>5 Days and 5 Nights</h3>
+								<p>
+									Turkey: East-West blend. Ancient wonders, vibrant bazaars. Breathtaking landscapes, warm hospitality. Istanbul's Hagia Sophia, delicious cuisine. Stunning coastlines, rich culture.
+								</p>
+							</div>
+							<div class="note">
+								<p>
+									*Available for upto 2 persons only<br>
+									*Flight & Food charges to be charged seperately 
+								</p>
+							</div>
+							<div class="cash">
+								<h3>Rs. 600,000</h3>
+							</div>
+							<a class="btn btn-primary btn-customized" role="button" onclick="populateModal(this)" data-destination="Turkey" data-price="600000" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fas fa-cart-plus"></i> Book Now</a>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>  
+
+		<!-- Contact Section -->
+		<section id="contactus" class="contact section-bg">
+			<div class="bigbox">
+				<div class="container" data-aos="fade-up">
+		  
+				  <div class="section-title">
+					<h2 style="color: white; font-weight: bold;">Contact Us</h2>
+					<p>Greetings from Fusion Travels! We are thrilled to connect with you and present our extraordinary travel services tailored to create unforgettable experiences around the world. Whether you're seeking breathtaking natural wonders, cultural immersion, or thrilling adventures, we are here to turn your travel dreams into reality.</p>
+				  </div>
+		  
+				  <div class="row">
+					<div class="col-lg-6">
+					  <div class="info-box mb-4">
+						<i class="bx bx-map"></i>
+						<h3>Our Address</h3>
+						<p>DG-78, Off Khayaban-e-Tufail, Phase 7 (Extension), DHA, Karachi, Pakistan</p>
+					  </div>
+					</div>
+		  
+					<div class="col-lg-3 col-md-6">
+					  <div class="info-box  mb-4">
+						<i class="bx bx-envelope"></i>
+						<h3>Email Us</h3>
+						<p>contact@fusiontravels.com</p>
+					  </div>
+					</div>
+		  
+					<div class="col-lg-3 col-md-6">
+					  <div class="info-box  mb-4">
+						<i class="bx bx-phone-call"></i>
+						<h3>Call Us</h3>
+						<p>+92 123 4567890</p>
+					  </div>
+					</div>
+		  
+				  </div>
+		  
+				  <div class="row">
+		  
+					<div class="col-lg-6 ">
+					  <iframe class="mb-4 mb-lg-0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.890721208377!2d67.0389159153804!3d24.892178548078438!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb3311152000061%3A0x71da8f1d2b5eaa98!2sDHA%20Suffa%20University!5e0!3m2!1sen!2s!4v1620518302849!5m2!1sen!2s" frameborder="0" style="border:0; width: 100%; height: 384px;" allowfullscreen></iframe>
+					</div>
+		  
+					<div class="col-lg-6">
+					  <form action="/dashboard" method="POST" role="form" class="contact-form">
+						<div class="row">
+						  <div class="col-md-6 form-group">
+							<input type="text" name="cuname" class="form-control" id="name" placeholder="Your Name" required>
+						  </div>
+						  <div class="col-md-6 form-group mt-3 mt-md-0">
+							<input type="text" class="form-control" name="cucontact" id="email" placeholder="Your Contact Number" required>
+						  </div>
+						</div>
+						<div class="form-group mt-3">
+						  <input type="text" class="form-control" name="cusubject" id="subject" placeholder="Subject" required>
+						</div>
+						<div class="form-group mt-3">
+						  <textarea class="form-control" name="cumessage" rows="5" placeholder="Message" required></textarea>
+						</div>
+						<div class="my-3">  
+						</div>
+						<div class="text-center"><button type="submit">Send Message</button></div>
+					  </form>
+					</div>
+		  
+				  </div>
+		  
+				</div>
+			</div>
+		  </section><!-- End Contact Section -->
+		
+
+        <!-- Javascript -->
+		<script src="../static/js/jquery-3.3.1.min.js"></script>
+		<script src="../static/js/jquery-migrate-3.0.0.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="../static/js/jquery.backstretch.min.js"></script>
+        <script src="../static/js/wow.min.js"></script>
+        <script src="../static/js/jquery.waypoints.min.js"></script>
+        <script src="../static/js/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="../static/js/scripts.js"></script>
+
+    </body>
+
+</html>

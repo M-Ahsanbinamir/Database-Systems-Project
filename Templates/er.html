@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Recorder - Fusion Travels</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="../static/css/animate.css">
+    <link rel="stylesheet" href="../static/vendor/boxicons/css/boxicons.min.css">
+    <link rel="stylesheet" href="../static/css/style-er.css">
+    <link rel="stylesheet" href="../static/css/media-queries.css">
+    
+
+    <!-- Favicon and touch icons -->
+    <link rel="shortcut icon" href="../static/img/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../static/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../static/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../static/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon-precomposed" href="../static/img/apple-touch-icon.png">
+
+    <style>
+        @font-face {
+            font-family: Baskerville-Regular;
+            src: url('../static/vendor/LibreBaskerville-Regular.ttf');
+        }
+        @font-face {
+            font-family: Baskerville-Bold;
+            src: url('../static/vendor/LibreBaskerville-Bold.ttf');
+        }
+        @font-face {
+            font-family: Baskerville-Italic;
+            src: url('../static/vendor/LibreBaskerville-Italic.ttf');
+        }
+    </style>
+    <script>
+        function logout(){
+            alert('Are you sure you want to logout?');
+
+            window.location.href='/logout';
+        }
+    </script>
+
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="sidebar">
+				
+            <!-- close sidebar menu -->
+            <div class="dismiss">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            
+            <div class="logo">
+                <span>Welcome, </span>
+                <h3>{{ session.get('fullname') }}</h3>
+            </div>
+              
+            
+            <ul class="list-unstyled menu-elements">
+                <li>
+                    <a class="scrollto" href="/dashboard#top-content"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li>
+                    <a class="scrollto" href="/dashboard#Local"><i class="fas fa-location-arrow" aria-hidden="true"></i> Local Travel Plans</a>
+                </li>
+                <li>
+                    <a class="scrollto" href="/dashboard#International"><i class="fas fa-globe" aria-hidden="true"></i> International Travel Plans</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="/er"><i class="fas fa-book-open"></i></i> Expense Recorder</a>
+                </li>
+                <li>
+                    <a class="scrollto" href="/dashboard#contactus"><i class="fas fa-envelope"></i> Contact Us</a>
+                </li>
+                
+            </ul>
+            
+            <div class="to-top">
+                <a class="btn btn-primary btn-top" href="#hero" role="button">
+                    <i class="fas fa-arrow-up"></i> Top
+                </a>
+            </div>
+            <hr>
+            <ul class="list-unstyled menu-elements">
+                <li>
+                    <a class="nav-link" onclick="logout()" style="cursor: pointer;"><i class="fas fa-arrow-right"></i> Log out</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- End sidebar -->
+        
+        <!-- Dark overlay -->
+        <div class="overlay"></div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- open sidebar menu -->
+            <a class="btn btn-primary btn-customized open-menu" href="#" role="button">
+                <i class="fas fa-align-left"></i> <span>Menu</span>
+            </a>
+
+
+            <div class="hero" id="hero">
+                <h1>Personal Expense Tracker</h1>
+                <div class="row">
+                    <a href="#add" class="btn btn-primary"><i class="fa fa-plus"></i> ADD</a>
+                    <a href="#display" class="btn btn-primary"><i class="fas fa-tv"></i> DISPLAY</a>
+                </div>
+            </div>
+            <div class="add">
+                <h2 class="divider donotcross" id="add" contenteditable="false"><strong>Add an Expense</strong></h2>
+                <div class="container">
+                    <form action="/er/add" method="POST">
+                        <label for="edate">Expense Date:</label>
+                        <input type="date" name="edate" id="edate"><br>
+                        <label for="etime">Expense Time:</label>
+                        <input type="time" name="etime" id="etime"><br>
+                        <label for="ename">Expense Name:</label>
+                        <input type="text" name="ename" id="ename" placeholder="Expense Name"><br>
+                        <label for="enumber">Expense Amount:</label>
+                        <input type="number" name="eamount" id="eamount" placeholder="Expense Amount"><br>
+                        <label for="destination">Expense Destination:</label>
+                        <input type="text" name="destination" id="destination" placeholder="Destination"><br>
+                        <label for="place">Expense Place:</label>
+                        <input type="text" name="place" id="place" placeholder="Place"><br>
+                        <label for="ptype">Payment Type:</label>
+                        <select name="ptype" id="ptype">
+                            <option value="cash">Cash</option>
+                            <option value="online">Online Payment</option>
+                            <option value="card">Payment via Bank Card</option>
+                        </select><br>
+                        <label for="category">Expense Category:</label>
+                        <select name="category" id="category">
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Refreshment">Refreshment</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Dinner">Dinner</option>
+                            <option value="Entry Fee">Entry Fee</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Flight">Flight</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Medical">Medical</option>
+                            <option value="Other">Other</option>
+                        </select><br>
+                        <input type="submit" value="Add Expense" class="btn btn-addexp">
+                    </form>
+                </div>
+            </div>
+
+            <div class="display">
+                <h2 class="divider donotcross" id="display" contenteditable="false"><strong>Expense Table for {{ session.get('fullname') }}</strong></h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Destination</th>
+                            <th>Place</th>
+                            <th>Payment Type</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                            <tr>
+                                <td>{{ record[0] }}</td>
+                                <td>{{ record[2] }}</td>
+                                <td>{{ record[3] }}</td>
+                                <td>{{ record[4] }}</td>
+                                <td>{{ record[5] }}</td>
+                                <td>{{ record[6] }}</td>
+                                <td>{{ record[7] }}</td>
+                                <td>{{ record[8] }}</td>
+                                <td>{{ record[9] }}</td>
+                                <td>
+                                    <form action="/er/{{ record[0] }}/delete" method="POST" style="display:inline">
+                                        <button type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Javascript -->
+		<script src="../static/js/jquery-3.3.1.min.js"></script>
+		<script src="../static/js/jquery-migrate-3.0.0.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="../static/js/jquery.backstretch.min.js"></script>
+        <script src="../static/js/wow.min.js"></script>
+        <script src="../static/js/jquery.waypoints.min.js"></script>
+        <script src="../static/js/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="../static/js/scripts.js"></script>
+
+</body>
+</html>
